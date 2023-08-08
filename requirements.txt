@@ -4,3 +4,11 @@ tiktoken
 scipy
 streamlit
 streamlit_chat
+pypdf
+scikit-learn
+numpy
+docx2txt
+langchain
+pydantic
+typing
+faiss-cpu
