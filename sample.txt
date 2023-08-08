@@ -1,0 +1,87 @@
+Base is a secure, low-cost, builder-friendly Ethereum L2 built to bring the next billion users onchain.
+
+Base is incubated within Coinbase and plans to progressively decentralize in the years ahead. We believe that decentralization is critical to creating an open, global cryptoeconomy that is accessible to everyone.
+
+Ethereum L2
+Base is built as an Ethereum L2, with the security, stability, and scalability you need to power your dapps. Confidently deploy any EVM codebase and onramp your users and assets from Ethereum L1, Coinbase, and other interoperable chains.
+
+Big features, small fees
+Get the EVM environment at a fraction of the cost. Get early access to Ethereum features like Account Abstraction (ERC4337), simple developer APIs for gasless transactions, and smart contract wallets.
+
+Open source
+Base is built on the MIT-licensed OP Stack, in collaboration with Optimism. We’re joining as the second Core Dev team working on the OP Stack to ensure it’s a public good available to everyone.
+
+Scaled by Coinbase
+Base is an easy way for decentralized apps to leverage Coinbase’s products and distribution. Seamless Coinbase integrations, easy fiat onramps, and access to millions of verified users in the Coinbase ecosystem.
+
+Optimistic Rollups TL;DR
+Optimism is an "Optimistic Rollup," which is basically just a fancy way of describing a blockchain that piggy-backs off of the security of another "parent" blockchain. Specifically, Optimistic Rollups take advantage of the consensus mechanism (like PoW or PoS) of their parent chain instead of providing their own. In OP Mainnet's case this parent blockchain is Ethereum.
+
+
+#Block storage
+In Bedrock L2 blocks are saved to the Ethereum blockchain using a non-contract address (0xff00...0420 on Goerli (opens new window), 0xff00..0010 on Ethereum (opens new window)) to minimize the L1 gas expense. As these blocks are submitted as transaction calldata on Ethereum, there is no way to modify or censor them after the "transaction" is included in a block that has enough attestations. This is the way that OP Mainnet inherits the availability and integrity guarantees of Ethereum.
+
+Blocks are written to L1 in a compressed format (opens new window)to reduce costs. This is important because writing to L1 is the major cost of OP Mainnet transactions.
+
+#Block production
+Optimism block production is primarily managed by a single party, called the "sequencer," which helps the network by providing the following services:
+
+Providing transaction confirmations and state updates.
+Constructing and executing L2 blocks.
+Submitting user transactions to L1.
+In Bedrock the sequencer does have a mempool, similar to L1 Ethereum, but the mempool is private to avoid opening opportunities for MEV. In OP Mainnet blocks are produced every two seconds, regardless of whether they are empty (no transactions), filled up to the block gas limit with transactions, or anything in between.
+
+Transactions get to the sequencer in two ways:
+
+Transactions submitted on L1 (called deposits whether they have assets attached or not) are included in the chain in the appropriate L2 block. Every L2 block is identified by the "epoch" (the L1 block to which it corresponds, which typically has happened a few minutes before the L2 block) and its serial number within that epoch. The first block of the epoch includes all the deposits that happened in the L1 block to which it corresponds. If the sequencer attempts to ignore a legitimate L1 transaction it ends up with a state that is inconsistent with the verifiers, same as if the sequencer tried to fake the state by other means. This provides OP Mainnet with L1 Ethereum level censorship resistance. You can read more about this mechanism in the protocol specifications (opens new window).
+
+Transactions submitted directly to the sequencer. These transactions are a lot cheaper to submit (because you do not need the expense of a separate L1 transaction), but of course they cannot be made censorship resistant, because the sequencer is the only entity that knows about them.
+
+For the moment, The Optimism Foundation (opens new window)runs the only block producer on OP Mainnet. Refer to Protocol specs section for more information about how we plan to decentralize the Sequencer role in the future.
+
+#Block execution
+The execution engine (implemented as the op-geth component) receive blocks using two mechanisms:
+
+The execution engine can update itself using peer to peer network with other execution engines. This operates the same way that the L1 execution clients synchronize the state across the network. You can read more about it in the specs (opens new window).
+
+The rollup node (implemented as the op-node component) derives the L2 blocks from L1. This mechanism is slower, but censorship resistant. You can read more about it in the specs (opens new window).
+
+#Bridging assets between layers
+Optimism is designed so that users can send arbitrary messages between smart contracts on L2 (OP Mainnet, OP Goerli, etc.) and the underlying L1 (Ethereum mainnet, Goerli, etc.). This makes it possible to transfer assets, including ERC20 tokens, between the two networks. The exact mechanism by which this communication occurs differs depending on the direction in which messages are being sent.
+
+OP Mainnet uses this functionality in the Standard bridge to allow users to deposit assets (ERC20s and ETH) from Ethereum to OP Mainnet and also allow withdrawals of the same from OP Mainnet back to Ethereum. See the developer documentation and examples on details on the inner workings of the Standard bridge.
+
+#Moving from Ethereum to OP Mainnet
+In Optimism terminology, transactions going from Ethereum (L1) to OP Mainnet (L2) are called deposits, even if they do not have any assets attached to them.
+
+You use L1CrossDomainMessenger (opens new window)or L1StandardBridge (opens new window). Deposit transactions become part of the canonical blockchain in the first L2 block of the "epoch" corresponding to the L1 block where the deposits were made. This L2 block will usually be created a few minutes after the corresponding L1 block. You can read more about this in the specs (opens new window).
+
+#Moving from OP Mainnet to Ethereum
+Withdrawals (the term is used for any OP Mainnet to Ethereum message, regardless of whether it has attached assets or not) have three stages:
+
+You initialize withdrawals with an L2 transaction.
+
+Wait for the next output root to be submitted to L1 (you can see this on the SDK) and then submit the withdrawal proof using proveWithdrawalTransaction. This new step enables offchain monitoring of the withdrawals, which makes it easier to identify incorrect withdrawals or output roots. This protects OP Mainnet users against a whole class of potential bridge vulnerabilities.
+
+After the fault challenge period ends (a week on mainnet, less than that on the test network), finalize the withdrawal.
+
+You can read the full withdrawal specifications here(opens new window)
+
+#Fault proofs
+In an Optimistic Rollup, state commitments are published to L1 (Ethereum in the case of OP Mainnet) without any direct proof of the validity of these commitments. Instead, these commitments are considered pending for a period of time (called the "challenge window"). If a proposed state commitment goes unchallenged for the duration of the challenge window (currently set to 7 days), then it is considered final. Once a commitment is considered final, smart contracts on Ethereum can safely accept withdrawal proofs about the state of OP Mainnet based on that commitment.
+
+When a state commitment is challenged, it can be invalidated through a "fault proof" (formerly known as a "fraud proof" (opens new window)) process. If the commitment is successfully challenged, then it is removed from the StateCommitmentChain to eventually be replaced by another proposed commitment. It's important to note that a successful challenge does not roll back OP Mainnet itself, only the published commitments about the state of the chain. The ordering of transactions and the state of OP Mainnet is unchanged by a fault proof challenge.
+
+The fault proof process is currently undergoing major redevelopment as a side-effect of the November 11th EVM Equivalence (opens new window)update. You can read more about this process within the Protocol specs section of this website.
+
+Mode is an Ethereum layer-2 blockchain designed for hyper-growth.  
+Mode is built using Optimism's OP Stack which enables rapid application development and deployment of EVM-compatible applications. Mode's network fees are 95% less than Ethereum mainnet. 
+The goal of Mode is to empower developers and users to grow an ecosystem of world-class applications and be directly rewarded for their contribution to the ecosystem through referral and contract-secured revenue. 
+Designed for Growth
+Mode is designed with contract revenue-sharing incentives at the protocol layer. Applications and users that scale the Mode blockchain will directly receive a proportion of network sequencer profits. 
+Low Fees
+Mode has implemented Optimism's Bedrock upgrade which has significantly reduced the fees to be over 95% less than Ethereum. 
+Scaling Ethereum 
+Developers familiar with building on Ethereum can deploy applications to Mode in minutes. Mode Network scales the Ethereum ecosystem. 
+Open source​
+Mode is built on the OP Stack, in collaboration with Optimism. We aim to contribute to growing the Optimism ecosystem as a key partner. 
