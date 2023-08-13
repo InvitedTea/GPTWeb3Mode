@@ -9,22 +9,12 @@ Solution: I built ChatGPT with a curated knowledge base to help developers to ge
 
 ### 2. **How it works**
 
-
-   - **Embed L2 Knowledge into ChatGPT:** Customize the model with specific L2 development knowledge, possibly using fine-tuning techniques.
-   - **Question and Answer Interface:** Create an intuitive interface for users to ask questions and receive AI-generated answers.(done)
-
-### 3. **NFT Creation and Appreciation System**
-   - **Design NFT Structure:** Define the criteria for what constitutes a mintable answer and how NFTs will be structured.
-   - **Minting Process:** Implement a streamlined process for users to mint NFTs from AI-generated answers, utilizing Web3 standards.
-   - **Appreciation Mechanism:** Establish a system that allows users to appreciate or reward unique or valuable answers, possibly through likes, upvotes, or direct incentives.
+   - **Streamlit Python allow fast app dev
+   - **Scrape github L2 OP, base and mode tech docs as quick PoC
+   - **Use LangChain doc/files embedding and OpenAI Text-embedding-ada-002 model
+   - **Use ChatGPT 3.5 base model
+   - **Use NFT badge to auth the access to query front-end
 
 
-1. Start to play Brownie to make NFT part works.
-python3 -m pip install --user pipx
-python3 -m pipx ensurepath
-pipx install eth-brownie
-
-
-- 
 
 
