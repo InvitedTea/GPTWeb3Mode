@@ -50,7 +50,7 @@ index = parse()
 #### uncomment this and run the app to initialize a new token (take note of the returned tokenId)
 login_button_erc721 = wallet_connect(label="login", key="login", message="Connect Your Wallet to Validate Your NFT badge", auth_token_contract_address="0x967da4048cD07aB37855c090aAF366e4ce1b9F48", chain_name="base", contract_type="ERC721", num_tokens="0")
 
-st.write('This Demo Powered By ChatGPT@OPENAI')
+st.write('This Demo USE BASE NFT AUTH')
 st.write('Bought you by InvitedTea')
 
 if 'generated' not in st.session_state:
