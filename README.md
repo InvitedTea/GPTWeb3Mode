@@ -16,5 +16,11 @@ Solution: I built ChatGPT with a curated knowledge base to help developers to ge
    - **Use NFT badge to auth the access to query front-end
 
 
+### 3. **Future Roadmap**
 
+   - ** Collect massive L2 knowledge from Github and embedded the GPT model
+   - ** Evaluate the model performance with the community
+   - ** Collect feedback from other features and requirements.
+   - ** Please follow @invitedtea or @keyboxAI
+   - ** Join the (VIP list for private preview)[https://docs.google.com/forms/d/e/1FAIpQLScsACWIzU82B2d9U6UcqYYxya44LV3EHbaFJyLs3Vz96kEuDA/viewform]
 
