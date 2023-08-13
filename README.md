@@ -15,7 +15,12 @@ Use ChatGPT and Web3 updated knowledge base to help L2 dev productivity and boos
    - **Appreciation Mechanism:** Establish a system that allows users to appreciate or reward unique or valuable answers, possibly through likes, upvotes, or direct incentives.
 
 
-- Start to play Brownie to make NFT part works.
+1. Start to play Brownie to make NFT part works.
+python3 -m pip install --user pipx
+python3 -m pipx ensurepath
+pipx install eth-brownie
+
+
 - 
 
 
