@@ -1,11 +1,15 @@
 # GPTWeb3Mode
-Use ChatGPT and Web3 updated knowledge base to help L2 dev productivity and boost ecosystem 
+Use ChatGPT and Web3 updated knowledge base to help L2 dev productivity and boost the ecosystem.
 
 ### 1. **Defining Objectives and Scope**
-   - **Objective:** Enhance L2 development productivity by providing expert answers and allowing users to mint NFTs from those answers.
+Challenge: The L2 chains are new and evolving rapidly, which can overwhelm newcomers and experts.
+Limitation of Current Tools: ChatGPT doesn't provide the most recent two years of knowledge.
+Solution: I built ChatGPT with a curated knowledge base to help developers to get more productivity and efficiency and grow our ecosystem for L2.
    - **Target Audience:** L2 developers, enthusiasts, and anyone interested in the decentralized technology ecosystem.(done)
 
-### 2. **Knowledge Embedding and AI Integration**
+### 2. **How it works**
+
+
    - **Embed L2 Knowledge into ChatGPT:** Customize the model with specific L2 development knowledge, possibly using fine-tuning techniques.
    - **Question and Answer Interface:** Create an intuitive interface for users to ask questions and receive AI-generated answers.(done)
 
