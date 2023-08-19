@@ -1,4 +1,4 @@
-# GPTWeb3Mode
+# GPTWeb3Mode  --- SuperHack - Win Mode Reward
 Use ChatGPT and Web3 updated knowledge base to help L2 dev productivity and boost the ecosystem.
 
 ### 1. **Defining Objectives and Scope**
